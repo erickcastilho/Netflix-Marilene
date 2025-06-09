@@ -1,18 +1,13 @@
 const API_KEY = '6866b1d86eb7c87c9d5bcd71d7a89dc8';
-
 const API_BASE = 'https://api.themoviedb.org/3';
 
-
-
-
 const basicFetch = async (endpoint) => {
-    const req = await fetch(`${API_BASE}${endpoint}`); // Fazer requisição para um serviço externo ( 'await' é usado para esperar a resposta )
+    const req = await fetch(`${API_BASE}${endpoint}`);
     const json = await req.json();
     return json;
-}
+};
 
-
-export default {
+const Tmdb = {
     getHomeList: async () => {
         return [
             {
@@ -40,35 +35,33 @@ export default {
                 title: 'Comédia',
                 items: await basicFetch(`/discover/movie?with_genres=35&language=pt-BR&api_key=${API_KEY}`)
             },
-          
-         
             {
                 slug: 'documentary',
                 title: 'Documentários',
                 items: await basicFetch(`/discover/movie?with_genres=99&language=pt-BR&api_key=${API_KEY}`)
             },
-        ]
+        ];
     },
 
     getMovieInfo: async (movieId, type) => {
         let info = {};
 
-        if(movieId) {
-            switch(type) {
+        if (movieId) {
+            switch (type) {
                 case 'movie':
                     info = await basicFetch(`/movie/${movieId}?language=pt-BR&api_key=${API_KEY}`);
-                break;
+                    break;
                 case 'tv':
                     info = await basicFetch(`/tv/${movieId}?language=pt-BR&api_key=${API_KEY}`);
-                break;
+                    break;
                 default:
                     info = null;
-                break;
+                    break;
             }
         }
-        
-        return info;
-     
-    }
 
-}
+        return info;
+    }
+};
+
+export default Tmdb;
